@@ -13,6 +13,6 @@ public interface UserDAO {
     @Insert
     void insert(User user);
 
-    @Query("SELECT * FROM user WHERE username = :username AND password = :password" )
-    User login(String username, String password);
+    @Query("SELECT * FROM user WHERE username = :username AND password = :password LIMIT 1" )
+    User getUser(String username, String password);
 }

@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 2,
-    "identityHash": "d018675079aba4ae4d85e3a134ad39cd",
+    "identityHash": "7b52725c11b60a2d066aa418943ebe7e",
     "entities": [
       {
         "tableName": "user",
@@ -67,12 +67,44 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "admins",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `username` TEXT, `password` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "username",
+            "columnName": "username",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "password",
+            "columnName": "password",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'd018675079aba4ae4d85e3a134ad39cd')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '7b52725c11b60a2d066aa418943ebe7e')"
     ]
   }
 }

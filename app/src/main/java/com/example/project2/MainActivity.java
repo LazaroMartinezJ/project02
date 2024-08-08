@@ -21,23 +21,12 @@ public class MainActivity extends AppCompatActivity {
     private EditText usernameEditText;
     private EditText passwordEditText;
     private AppDataBase db;
-    private static final String TAG = "MainActivity";
-    private static final String PREFERENCE_FILE = "com.example.yourapp.preferences";
-    private static final String KEY_USER_ID = "USER_ID";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        SharedPreferences preferences = getSharedPreferences(PREFERENCE_FILE, Context.MODE_PRIVATE);
-        int savedUserId = preferences.getInt("USER_ID", -1);
-        if(savedUserId != -1){
-            Intent intent = new Intent(MainActivity.this, HomeActivity.class);
-            intent.putExtra("USER_ID", savedUserId);
-            startActivity(intent);
-            finish();
-            return;
-        }
 
         setContentView(R.layout.activity_main);
 
@@ -45,9 +34,9 @@ public class MainActivity extends AppCompatActivity {
         passwordEditText = findViewById(R.id.password);
         Button loginButton = findViewById(R.id.login_button);
         Button createAccountButton = findViewById(R.id.create_account_button);
+        Button adminButton = findViewById(R.id.admin_button);
 
-        db = Room.databaseBuilder(getApplicationContext(),
-                AppDataBase.class, "user-database").build();
+       db = AppDataBase.getDatabase(getApplicationContext());
 
         loginButton.setOnClickListener(v -> login());
         createAccountButton.setOnClickListener(v -> {
@@ -55,22 +44,18 @@ public class MainActivity extends AppCompatActivity {
                     CreateAccountActivity.class);
             startActivity(intent);
         });
+        adminButton.setOnClickListener(v -> adminLogin());
     }
+
 
     private void login(){
         String username = usernameEditText.getText().toString();
         String password = passwordEditText.getText().toString();
 
         new Thread(()-> {
-            try {
-                User user = db.userDao().login(username, password);
+                User user = db.userDao().getUser(username,password);
                 runOnUiThread(() -> {
                     if (user != null) {
-                        SharedPreferences preferences = getSharedPreferences(PREFERENCE_FILE, Context.MODE_PRIVATE);
-                        SharedPreferences.Editor editor = preferences.edit();
-                        editor.putInt("USER_ID", user.id);
-                        editor.apply();
-
                         Intent intent = new Intent(MainActivity.this, HomeActivity.class);
                         intent.putExtra("USER_ID", user.id);
                         startActivity(intent);
@@ -80,10 +65,24 @@ public class MainActivity extends AppCompatActivity {
                                 Toast.LENGTH_SHORT).show();
                     }
                 });
-            }catch (Exception e) {
-                Log.e(TAG, "Error loggin in", e);
-                runOnUiThread(() -> Toast.makeText(MainActivity.this, "Login failed", Toast.LENGTH_SHORT).show());
-            }
+        }).start();
+    }
+
+    private void adminLogin(){
+        String username = usernameEditText.getText().toString();
+        String password = passwordEditText.getText().toString();
+
+        new Thread(() -> {
+            Admin admin = db.adminDao().getAdmin(username, password);
+            runOnUiThread(() -> {
+                if(admin != null){
+                    Intent intent = new Intent(MainActivity.this, AdminHomeActivity.class);
+                    startActivity(intent);
+                    finish();
+                }else {
+                    Toast.makeText(MainActivity.this, "Invalid admin username or password", Toast.LENGTH_SHORT).show();
+                }
+            });
         }).start();
     }
 

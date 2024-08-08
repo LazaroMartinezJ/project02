@@ -35,7 +35,7 @@
         android:id="@+id/login_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
+        android:layout_marginBottom="20dp"
         android:text="Login"
         app:layout_constraintBottom_toTopOf="@+id/create_account_button"
         app:layout_constraintEnd_toEndOf="parent"
@@ -46,10 +46,24 @@
         android:id="@+id/create_account_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="252dp"
+        android:layout_marginBottom="100dp"
         android:text="Create Account"
+        app:layout_constraintBottom_toTopOf="@+id/admin_button"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <Button
+        android:id="@+id/admin_button"
+        android:layout_width="430dp"
+        android:layout_height="39dp"
+        android:layout_below="@id/password"
+        android:layout_margin="16dp"
+        android:layout_marginBottom="16dp"
+        android:layout_toEndOf="@id/create_account_button"
+        android:text="Admin"
         app:layout_constraintBottom_toBottomOf="parent"
-        tools:layout_editor_absoluteX="16dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.526"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/textView"

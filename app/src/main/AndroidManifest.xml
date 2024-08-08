@@ -25,6 +25,7 @@
         <activity android:name=".CreateAccountActivity"/>
         <activity android:name=".HomeActivity"/>
         <activity android:name=".EntriesActivity"/>
+        <activity android:name=".AdminHomeActivity"/>
     </application>
 
 </manifest>
